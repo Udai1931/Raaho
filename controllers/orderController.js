@@ -39,6 +39,7 @@ module.exports.getAllBids = async function(req,res){
 
             res.json({
                 message:"Bids fetched successfully.",
+                order:order,
                 topBid : order.topBid,
                 topFive : bids.slice(0,5),
                 leftBids : bids.slice(5)
@@ -46,6 +47,20 @@ module.exports.getAllBids = async function(req,res){
         }else{
             throw new Error("Order Id is required.");
         }
+    }catch(err){
+        res.json({
+            message:err.message
+        })
+    }
+}
+
+module.exports.getAllOrders = async function(req,res){
+    try{
+        let orders = await orderModel.find();
+        res.json({
+            message:"Orders fetched successfully.",
+            data:orders
+        })
     }catch(err){
         res.json({
             message:err.message

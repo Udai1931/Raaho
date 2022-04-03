@@ -14,14 +14,14 @@ module.exports.createBid = async function(req,res){
         if((order.basePrice > price) || (order.maxPrice < price)){
             throw new Error("Price must be greater than base price ans Smaller than max price");
         }
-        let timeLimit = new Date(order.createdAt).getTime();
+        let timeLimit = new Date(order.createdAt).getTime(); 
         timeLimit += order.timer * 60 * 1000;
         let currentTime = new Date().getTime();
         if(timeLimit < currentTime){
             throw new Error("Time limit exceeded.");
         }
         let bid = await bidModel.create({price});
-        order.bids.push(bid);
+        order.bids = [...order.bids,bid._id]
 
         if(order.topBidPrice < price){
             order.topBidPrice = price;
